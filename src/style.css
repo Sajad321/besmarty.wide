@@ -1,0 +1,309 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@500&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  overflow-x: hidden;
+}
+
+.webgl {
+  position: fixed;
+  top: 0;
+  left: 0;
+  outline: none;
+}
+
+/* .container-fluid {
+  overflow-y: scroll;
+  overflow-x: hidden;
+  scroll-snap-type: y mandatory;
+  height: 100vh;
+} */
+
+.frontal-lobe {
+  height: 100vh;
+  position: relative;
+  display: block;
+  clip-path: polygon(
+    0 0,
+    85% 0,
+    72.5% 23%,
+    72.5% 80%,
+    85% 100%,
+    0 100%,
+    0% 80%,
+    0% 20%
+  );
+  background-color: hsl(216, 21%, 16%);
+}
+
+.article-frontal-lobe {
+  color: white;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  left: 37.5%;
+  font-family: "Oswald", sans-serif;
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.occipital-lobe {
+  height: 100vh;
+  position: relative;
+  display: block;
+  clip-path: polygon(100% 0, 100% 100%, 15% 100%, 27.5% 76%, 27.5% 24%, 15% 0);
+  background-color: hsl(216, 21%, 16%);
+}
+
+.article-occipital-lobe {
+  color: white;
+  position: absolute;
+  top: 50%;
+  transform: translate(-10%, -50%);
+  left: 37.5%;
+  font-family: "Oswald", sans-serif;
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.parietal-lobe {
+  height: 100vh;
+  position: relative;
+  display: block;
+  clip-path: polygon(
+    0 0,
+    85% 0,
+    72.5% 23%,
+    72.5% 80%,
+    85% 100%,
+    0 100%,
+    0% 80%,
+    0% 20%
+  );
+  background-color: hsl(216, 21%, 16%);
+}
+
+.article-parietal-lobe {
+  color: white;
+  position: absolute;
+  top: 50%;
+  transform: translate(-10%, -50%);
+  left: 37.5%;
+  font-family: "Oswald", sans-serif;
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.temporal-lobe {
+  height: 100vh;
+  position: relative;
+  display: block;
+  clip-path: polygon(100% 0, 100% 100%, 15% 100%, 27.5% 76%, 27.5% 24%, 15% 0);
+  background-color: hsl(216, 21%, 16%);
+}
+
+.article-temporal-lobe {
+  color: white;
+  position: absolute;
+  top: 50%;
+  transform: translate(-10%, -50%);
+  left: 37.5%;
+  font-family: "Oswald", sans-serif;
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.headline {
+  font-size: 4.25rem;
+}
+
+.subject {
+  font-size: 2.125rem;
+  padding-left: 35px;
+  padding-right: 35px;
+}
+
+.fl-elements {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  left: 37.5%;
+  z-index: -1;
+}
+
+.anime-circle {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: white;
+  position: absolute;
+}
+
+.anime-triangle {
+  position: absolute;
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+  background-color: white;
+  width: 30px;
+  height: 30px;
+}
+
+.anime-star {
+  position: absolute;
+  clip-path: polygon(
+    50% 0%,
+    61% 35%,
+    98% 35%,
+    68% 57%,
+    79% 91%,
+    50% 70%,
+    21% 91%,
+    32% 57%,
+    2% 35%,
+    39% 35%
+  );
+  background-color: white;
+  width: 30px;
+  height: 30px;
+}
+
+.ol-elements {
+  position: absolute;
+  top: 50%;
+  transform: translate(-10%, -50%);
+  left: 37.5%;
+  z-index: -1;
+}
+
+.anime-heart {
+  position: absolute;
+  clip-path: url(#heart-path);
+  background-color: white;
+  width: 30px;
+  height: 30px;
+}
+
+.anime-crescent {
+  position: absolute;
+  clip-path: url(#crescent-path);
+  background-color: white;
+  width: 30px;
+  height: 30px;
+}
+
+.anime-shape {
+  position: absolute;
+  clip-path: url(#shape-path);
+  background-color: white;
+  width: 30px;
+  height: 30px;
+}
+
+.pl-elements {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  left: 37.5%;
+  z-index: -1;
+}
+
+.anime-dragon {
+  position: absolute;
+  clip-path: url(#dragon-path);
+  background-color: white;
+  width: 30px;
+  height: 30px;
+}
+
+.anime-shuriken {
+  position: absolute;
+  clip-path: url(#shuriken-path);
+  background-color: white;
+  width: 30px;
+  height: 30px;
+}
+
+.anime-lightning {
+  position: absolute;
+  clip-path: url(#lightning-path);
+  background-color: white;
+  width: 30px;
+  height: 30px;
+}
+
+.tl-elements {
+  position: absolute;
+  top: 50%;
+  transform: translate(-10%, -50%);
+  left: 37.5%;
+  z-index: -1;
+}
+
+.anime-pacman {
+  position: absolute;
+  clip-path: url(#pacman-path);
+  background-color: white;
+  width: 30px;
+  height: 30px;
+}
+
+.anime-alien {
+  position: absolute;
+  clip-path: url(#alien-path);
+  background-color: white;
+  width: 30px;
+  height: 30px;
+}
+
+.anime-gamecontrol {
+  position: absolute;
+  clip-path: url(#gamecontrol-path);
+  background-color: white;
+  width: 30px;
+  height: 30px;
+}
+
+.anime-leaf {
+  position: absolute;
+  clip-path: url(#leaf-path);
+  background-color: white;
+  width: 30px;
+  height: 30px;
+}
+
+.anime-butterfly {
+  position: absolute;
+  clip-path: url(#butterfly-path);
+  background-color: white;
+  width: 30px;
+  height: 30px;
+}
+
+.anime-clover-leaf {
+  position: absolute;
+  clip-path: url(#clover-leaf-path);
+  background-color: white;
+  width: 30px;
+  height: 30px;
+}
+
+/* .curve::before {
+    content: "";
+    display: block;
+    position: absolute;
+    width: 90%;
+    height: 100%;
+    background-color: hsl(216, 21%, 16%);
+  }
+  
+  .curve::after {
+    content: "";
+    display: block;
+    position: absolute;
+    border-radius: 50%;
+    width: 50%;
+    height: 110%;
+    background-color: rgba(0, 0, 0, 0);
+    transform: translate(140%, 0);
+  } */
