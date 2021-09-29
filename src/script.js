@@ -5,10 +5,43 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import * as dat from "dat.gui";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import gsap from "gsap";
+import ScrollTrigger from "gsap/ScrollTrigger";
 import anime from "animejs/lib/anime.es.js";
 import scrollmonitor from "scrollmonitor";
 import { scrollIntoView } from "scroll-js";
 
+/**
+ * Loaders
+ */
+const loadingBarElement = document.querySelector(".loading-bar");
+const loadingManager = new THREE.LoadingManager(
+  // Loaded
+  () => {
+    // Wait a little
+    window.setTimeout(() => {
+      // Animate overlay
+      gsap.to(overlayMaterial.uniforms.uAlpha, {
+        duration: 3,
+        value: 0,
+        delay: 1,
+      });
+      document.querySelector(".container-fluid").classList.add("d-block");
+      // Update loadingBarElement
+      loadingBarElement.classList.add("ended");
+      loadingBarElement.style.transform = "";
+    }, 500);
+  },
+
+  // Progress
+  (itemUrl, itemsLoaded, itemsTotal) => {
+    // Calculate the progress and update the loadingBarElement
+    const progressRatio = itemsLoaded / itemsTotal;
+    loadingBarElement.style.transform = `scaleX(${progressRatio})`;
+  }
+);
+const gltfLoader = new GLTFLoader(loadingManager);
+
+gsap.registerPlugin(ScrollTrigger);
 // var SPECTOR = require("spectorjs");
 
 // var spector = new SPECTOR.Spector();
@@ -114,6 +147,29 @@ elementWatcher.enterViewport(function () {
     // loop: true,
     delay: 1000,
   });
+
+  gsap.to(model.position, {
+    duration: 1,
+    x: 3,
+    y: -0.6,
+    z: 0,
+    ease: "easeIn",
+  });
+  gsap.to(pointLight.position, {
+    duration: 1,
+    x: 3,
+    y: 0,
+    z: 3,
+    ease: "easeIn",
+  });
+  console.log(model.rotation.y);
+  if (model.rotation.y == Math.PI) {
+    gsap.to(model.rotation, {
+      duration: 1,
+      y: 0,
+      ease: "easeIn",
+    });
+  }
   console.log(startup);
   startup += 1;
 });
@@ -252,6 +308,26 @@ elementWatcherOc.enterViewport(function () {
     // loop: true,
     delay: 1000,
   });
+  gsap.to(model.position, {
+    duration: 1,
+    x: -3,
+    y: -0.6,
+    z: 0,
+    ease: "easeIn",
+  });
+  gsap.to(pointLight.position, {
+    duration: 1,
+    x: -3,
+    y: 0,
+    z: 3,
+    ease: "easeIn",
+  });
+  gsap.to(model.rotation, {
+    duration: 1,
+    y: model.rotation.y + Math.PI,
+    ease: "easeIn",
+  });
+
   console.log(startup);
   startup += 1;
 });
@@ -572,10 +648,35 @@ const canvas = document.querySelector("canvas.webgl");
 // Scene
 const scene = new THREE.Scene();
 
-// GLTF loader
-const gltfLoader = new GLTFLoader();
-
 let model = null;
+
+/**
+ * Overlay
+ */
+const overlayGeometry = new THREE.PlaneBufferGeometry(2, 2, 1, 1);
+const overlayMaterial = new THREE.ShaderMaterial({
+  // wireframe: true,
+  transparent: true,
+  uniforms: {
+    uAlpha: { value: 1 },
+  },
+  vertexShader: `
+        void main()
+        {
+            gl_Position = vec4(position, 1.0);
+        }
+    `,
+  fragmentShader: `
+        uniform float uAlpha;
+
+        void main()
+        {
+            gl_FragColor = vec4(0.0, 0.0, 0.0, uAlpha);
+        }
+    `,
+});
+const overlay = new THREE.Mesh(overlayGeometry, overlayMaterial);
+scene.add(overlay);
 
 /**
  * Lights
@@ -630,54 +731,32 @@ gltfLoader.load("brain.glb", (gltf) => {
 /**
  * Object Tracking
  */
-let frontlLobe = document.getElementById("frontal-lobe");
-frontlLobe.addEventListener("click", () => {
-  // gsap.to(camera.position, {
-  //   duration: 1,
-  //   x: 3,
-  //   y: 0,
-  //   z: 3,
-  //   ease: "easeIn",
-  // });
-  gsap.to(model.position, {
-    duration: 1,
-    x: 3,
-    y: -0.6,
-    z: 0,
-    ease: "easeIn",
-  });
-  gsap.to(pointLight.position, {
-    duration: 1,
-    x: 3,
-    y: 0,
-    z: 3,
-    ease: "easeIn",
-  });
-  // model.position.set(1, -0.6, 0);
-});
-frontlLobe.addEventListener("dblclick", () => {
-  // gsap.to(model.position, {
-  //   duration: 1,
-  //   x: 0,
-  //   y: -0.6,
-  //   z: 0,
-  //   ease: "easeIn",
-  // });
-  gsap.to(model.rotation, {
-    duration: 1,
-    x: model.rotation.x + 2 * Math.PI,
-    ease: "easeIn",
-  });
-  // randomAnimation.pause();
-  // gsap.to(pointLight.position, {
-  //   duration: 1,
-  //   x: 0,
-  //   y: 0,
-  //   z: 3,
-  //   ease: "easeIn",
-  // });
-  // model.position.set(1, -0.6, 0);
-});
+
+// loadingManager.onLoad(() => {
+// });
+// frontlLobe.addEventListener("dblclick", () => {
+//   // gsap.to(model.position, {
+//   //   duration: 1,
+//   //   x: 0,
+//   //   y: -0.6,
+//   //   z: 0,
+//   //   ease: "easeIn",
+//   // });
+//   gsap.to(model.rotation, {
+//     duration: 1,
+//     x: model.rotation.x + 2 * Math.PI,
+//     ease: "easeIn",
+//   });
+//   // randomAnimation.pause();
+//   // gsap.to(pointLight.position, {
+//   //   duration: 1,
+//   //   x: 0,
+//   //   y: 0,
+//   //   z: 3,
+//   //   ease: "easeIn",
+//   // });
+//   // model.position.set(1, -0.6, 0);
+// });
 
 /**
  * Sizes
