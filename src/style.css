@@ -34,11 +34,21 @@ body {
   transform: scaleX(0);
   transform-origin: 100% 0;
   transition: transform 1.5s ease-in-out;
-  z-index: 99999;
+  z-index: 999;
 }
 
 .container-fluid {
   display: none;
+  opacity: 0;
+}
+
+.enter {
+  height: 100vh;
+  visibility: hidden;
+}
+
+.enter-button {
+  z-index: 9999;
 }
 
 .frontal-lobe {
@@ -304,22 +314,81 @@ body {
   height: 30px;
 }
 
-/* .curve::before {
-    content: "";
-    display: block;
-    position: absolute;
-    width: 90%;
-    height: 100%;
-    background-color: hsl(216, 21%, 16%);
+footer {
+  height: 10vh;
+  display: flex;
+  position: relative;
+  background-color: hsl(213, 22%, 10%);
+  color: white;
+  width: 100%;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+}
+
+/**
+ * @file
+ * Main responsive stylesheet file.
+ */
+
+/*****************************************************************************
+  * Large devices (large desktops, 1200px and up)
+  ****************************************************************************/
+/* @media (max-width: 1200px) {
+} */
+/* Large devices (large desktops, 1200px and up) end */
+
+/*****************************************************************************
+  * Medium devices (desktops, 1100px and up)
+  ****************************************************************************/
+@media (max-width: 1100px) {
+  .headline {
+    font-size: 3rem;
   }
-  
-  .curve::after {
-    content: "";
-    display: block;
-    position: absolute;
-    border-radius: 50%;
-    width: 50%;
-    height: 110%;
-    background-color: rgba(0, 0, 0, 0);
-    transform: translate(140%, 0);
-  } */
+
+  .subject {
+    font-size: 1.5rem;
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+}
+/* Medium devices (desktops, 1100px and up) end */
+
+/*****************************************************************************
+  * Small devices (tablets, 768px and up)
+  ****************************************************************************/
+@media (max-width: 768px) {
+  .headline {
+    font-size: 2.75rem;
+  }
+
+  .subject {
+    font-size: 1.375rem;
+    padding-left: 25px;
+    padding-right: 25px;
+  }
+}
+/* Small devices (tablets, 768px and up) end */
+
+/*****************************************************************************
+ * Extra small devices (phones, up to 520px)
+ ****************************************************************************/
+@media (max-width: 520px) {
+  .headline {
+    font-size: 2.25rem;
+  }
+
+  .subject {
+    font-size: 1.125rem;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+
+/* Extra small devices (phones, up to 767px) end */
+
+/*****************************************************************************
+  * Various other styles
+  ****************************************************************************/
+
+/* Various other styles end */

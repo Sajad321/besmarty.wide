@@ -14,7 +14,7 @@ import { scrollIntoView } from "scroll-js";
  * Base
  */
 // Debug
-const gui = new dat.GUI();
+// const gui = new dat.GUI();
 
 // Canvas
 const canvas = document.querySelector("canvas.webgl");
@@ -64,14 +64,7 @@ const loadingManager = new THREE.LoadingManager(
   () => {
     // Wait a little
     window.setTimeout(() => {
-      // Animate overlay
-      gsap.to(overlayMaterial.uniforms.uAlpha, {
-        duration: 3,
-        value: 0,
-        delay: 1,
-      });
-
-      document.querySelector(".container-fluid").classList.add("d-block");
+      document.querySelector(".enter").classList.add("visible");
 
       // Update loadingBarElement
       loadingBarElement.classList.add("ended");
@@ -93,6 +86,20 @@ const gltfLoader = new GLTFLoader(loadingManager);
 // var spector = new SPECTOR.Spector();
 // spector.displayUI();
 
+document.querySelector(".enter-button").addEventListener("click", () => {
+  document.querySelector(".container-fluid").classList.add("d-block");
+  gsap.to(document.querySelector(".container-fluid"), {
+    opacity: 1,
+    duration: 1,
+  });
+  document.querySelector(".enter").classList.add("d-none");
+  // Animate overlay
+  gsap.to(overlayMaterial.uniforms.uAlpha, {
+    duration: 2,
+    value: 0,
+  });
+});
+
 /**
  * Model
  */
@@ -104,11 +111,38 @@ gltfLoader.load("brain.glb", (gltf) => {
   const bakedMesh = gltf.scene.children.find((child) => child.name === "brain");
   bakedMesh.material = material;
   // bakedMesh.flatShading = false;
+  bakedMesh.geometry.center();
   gltf.scene.scale.set(0.5, 0.5, 0.5);
-  gltf.scene.position.set(0, -0.6, 0);
-  gltf.scene.rotateY(Math.PI);
+  // gltf.scene.position.set(0, -0.6, 0);
+  // gltf.scene.rotateY(Math.PI);
   model = gltf.scene;
   scene.add(model);
+  model.position.set(3, 0, 0);
+  gsap.to(pointLight.position, {
+    duration: 1,
+    x: 3,
+    y: 0,
+    z: 3,
+    ease: "easeIn",
+  });
+  // gui
+  //   .add(model.rotation, "x")
+  //   .min(-2 * Math.PI)
+  //   .max(2 * Math.PI)
+  //   .step(Math.PI / 24)
+  //   .name("Model Rotation X");
+  // gui
+  //   .add(model.rotation, "y")
+  //   .min(-2 * Math.PI)
+  //   .max(2 * Math.PI)
+  //   .step(Math.PI / 24)
+  //   .name("Model Rotation Y");
+  // gui
+  //   .add(model.rotation, "z")
+  //   .min(-2 * Math.PI)
+  //   .max(2 * Math.PI)
+  //   .step(Math.PI / 24)
+  //   .name("Model Rotation Z");
 });
 
 /**
@@ -215,8 +249,6 @@ elementWatcher.enterViewport(function () {
     gsap.to(model.position, {
       duration: 1,
       x: 3,
-      y: -0.6,
-      z: 0,
       ease: "easeIn",
     });
     gsap.to(pointLight.position, {
@@ -226,10 +258,11 @@ elementWatcher.enterViewport(function () {
       z: 3,
       ease: "easeIn",
     });
-    console.log(model.rotation.y);
     gsap.to(model.rotation, {
       duration: 1,
-      y: 0,
+      x: 0,
+      y: -Math.PI,
+      z: 0,
       ease: "easeIn",
     });
   }
@@ -375,8 +408,6 @@ elementWatcherOc.enterViewport(function () {
     gsap.to(model.position, {
       duration: 1,
       x: -3,
-      y: -0.6,
-      z: 0,
       ease: "easeIn",
     });
     gsap.to(pointLight.position, {
@@ -388,7 +419,9 @@ elementWatcherOc.enterViewport(function () {
     });
     gsap.to(model.rotation, {
       duration: 1,
-      y: Math.PI,
+      x: 0,
+      y: 0,
+      z: 0,
       ease: "easeIn",
     });
   }
@@ -524,7 +557,28 @@ elementWatcherPt.enterViewport(function () {
     // loop: true,
     delay: 1000,
   });
-  console.log("enter parietal lobe");
+  if (model != null) {
+    gsap.to(model.position, {
+      duration: 1,
+      x: 3.05,
+      ease: "easeIn",
+    });
+    gsap.to(pointLight.position, {
+      duration: 1,
+      x: 3.05,
+      y: 0,
+      z: 3,
+      ease: "easeIn",
+    });
+    // Rotate To Parietal Lobe
+    gsap.to(model.rotation, {
+      duration: 1,
+      x: Math.PI / 2,
+      y: 0,
+      z: 0,
+      ease: "easeIn",
+    });
+  }
   console.log(startup);
   startup += 1;
 });
@@ -656,6 +710,29 @@ elementWatcherTl.enterViewport(function () {
     // loop: true,
     delay: 1000,
   });
+
+  if (model != null) {
+    gsap.to(model.position, {
+      duration: 1,
+      x: -3.125,
+      ease: "easeIn",
+    });
+    gsap.to(pointLight.position, {
+      duration: 1,
+      x: -3.125,
+      y: 0,
+      z: 3,
+      ease: "easeIn",
+    });
+    // Rotate To Temporal Lobe
+    gsap.to(model.rotation, {
+      duration: 1,
+      x: 0,
+      y: -Math.PI / 2,
+      z: Math.PI / 8,
+      ease: "easeIn",
+    });
+  }
   console.log(startup);
   startup += 1;
 });
@@ -708,58 +785,57 @@ const ambientLight = new THREE.AmbientLight();
 ambientLight.color = new THREE.Color(0xffffff);
 ambientLight.intensity = 0.04;
 scene.add(ambientLight);
-gui.add(ambientLight, "intensity").min(0).max(1).step(0.001);
+// gui.add(ambientLight, "intensity").min(0).max(1).step(0.001);
 
 // Point light
 const pointLight = new THREE.PointLight(0xe759ca, 1, 10);
 pointLight.position.set(0, 0, 3);
 scene.add(pointLight);
 
-gui.add(pointLight, "intensity").min(0.2).max(10).step(0.001);
-gui.add(pointLight.position, "x").min(0).max(10).step(0.001);
-gui.add(pointLight.position, "y").min(0).max(10).step(0.001);
-gui.add(pointLight.position, "z").min(0).max(10).step(0.001);
-const pointLightHelper = new THREE.PointLightHelper(pointLight, 1);
-scene.add(pointLightHelper);
+// gui.add(pointLight, "intensity").min(0.2).max(10).step(0.001);
+// gui.add(pointLight.position, "x").min(0).max(10).step(0.001);
+// gui.add(pointLight.position, "y").min(0).max(10).step(0.001);
+// gui.add(pointLight.position, "z").min(0).max(10).step(0.001);
+
 // Directional light
 const directionalLight = new THREE.DirectionalLight(0xe759ca, 0.4);
 directionalLight.position.set(1, 6, 0);
 scene.add(directionalLight);
-gui.add(directionalLight, "intensity").min(0.2).max(10).step(0.001);
-const directionalLightHelper = new THREE.DirectionalLightHelper(
-  directionalLight,
-  0.2
-);
-scene.add(directionalLightHelper);
+
+// Helpers
+
+// const pointLightHelper = new THREE.PointLightHelper(pointLight, 1);
+// scene.add(pointLightHelper);
+
+// gui.add(directionalLight, "intensity").min(0.2).max(10).step(0.001);
+// const directionalLightHelper = new THREE.DirectionalLightHelper(
+//   directionalLight,
+//   0.2
+// );
+// scene.add(directionalLightHelper);
 
 /**
  * Object Tracking
  */
 
-// loadingManager.onLoad(() => {
+// document.addEventListener("dblclick", () => {
+// gsap.to(model.position, {
+//   duration: 1,
+//   x: 0,
+//   y: -0.6,
+//   z: 0,
+//   ease: "easeIn",
 // });
-// frontlLobe.addEventListener("dblclick", () => {
-//   // gsap.to(model.position, {
-//   //   duration: 1,
-//   //   x: 0,
-//   //   y: -0.6,
-//   //   z: 0,
-//   //   ease: "easeIn",
-//   // });
-//   gsap.to(model.rotation, {
-//     duration: 1,
-//     x: model.rotation.x + 2 * Math.PI,
-//     ease: "easeIn",
-//   });
-//   // randomAnimation.pause();
-//   // gsap.to(pointLight.position, {
-//   //   duration: 1,
-//   //   x: 0,
-//   //   y: 0,
-//   //   z: 3,
-//   //   ease: "easeIn",
-//   // });
-//   // model.position.set(1, -0.6, 0);
+// console.log(8 * (Math.PI / 7));
+// randomAnimation.pause();
+// gsap.to(pointLight.position, {
+//   duration: 1,
+//   x: 0,
+//   y: 0,
+//   z: 3,
+//   ease: "easeIn",
+// });
+// model.position.set(1, -0.6, 0);
 // });
 
 /**
