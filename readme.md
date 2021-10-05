@@ -1,5 +1,5 @@
 # BeSmarty
-
+Works only for wide screens of computers.
 ## Setup
 
 Download [Node.js](https://nodejs.org/en/download/).
